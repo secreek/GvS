@@ -23,6 +23,8 @@ class Github
 
     return [nil, etag] unless activities
 
+    return [activities, etag] if last_hash # come on, we're updating every second, need second page?
+
     (2..page_count).each do |idx|
       params["page"] = idx
       result = GET_obj(url, params, headers) # concat the pages
