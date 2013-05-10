@@ -25,7 +25,8 @@ class Github
 
     (2..page_count).each do |idx|
       params["page"] = idx
-      activities += GET_obj(url, params, headers) # concat the pages
+      result = GET_obj(url, params, headers) # concat the pages
+      activities += result if result
     end
 
     [activities, etag]
