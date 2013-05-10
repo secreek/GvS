@@ -2,6 +2,7 @@
 require 'json'
 
 require './couchdb'
+require './github'
 
 class GvS
   attr_accessor :config
@@ -30,7 +31,8 @@ class GvS
   def create_db_if_not_exist db_name
     if !db_exist? db_name
       create_db db_name
-      # populate initial data
+      # since the initial data maybe very large,
+      # we'll process them for now
       insert new_event_since # the beginning
     end
   end
@@ -44,11 +46,22 @@ class GvS
   end
 
   def insert data
-    # make sure the data is valid
+    # make sure the data exists
     return unless data.length > 0
 
     # insert data into CouchDB
+    db_name = @config["db-name"]
     data.each do |event|
+      # TODO check the event structure
+      doc_name = event["date"] # use date as doc name
+      doc = @couch.get_document db_name, doc_name
+      if doc
+        doc["data"] << event unless doc["data"].include? event
+      else # if doc does not exists, create the doc
+        doc = { "data"  => [event] }
+      end
+
+      @couch.put_document db_name, doc_name, doc
     end
 
     # update last event for next grab
@@ -70,6 +83,7 @@ class GvS
 
   def new_event_since last_hash = nil
     # grab new event from github api
+    Github.activities_for @config["org-name"], last_hash
   end
 
 end

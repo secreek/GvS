@@ -1,3 +1,4 @@
+# Wrapper for CouchDB
 require './network.rb'
 
 class CouchDB
@@ -23,6 +24,10 @@ class CouchDB
 
   def put_document db_name, doc_name, doc
     PUT compose_path([db_name, doc_name]), doc
+  end
+
+  def delete_document db_name, doc_name
+    DELETE compose_path db_name, doc_name
   end
 
   private
