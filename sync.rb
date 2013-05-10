@@ -57,7 +57,7 @@ class GvS
       doc_name = date_time[0, date_time.index("T")] # strips the time part
       doc = @couch.get_document db_name, doc_name
       if doc
-        (doc["data"].include? event) ? break : doc["data"].insert(0, event) # put new stuff to top
+        (doc["data"].include? event) ? break : doc["data"] << event # put new stuff to top
       else # if doc does not exists, create the doc
         doc = { "data"  => [event] }
       end
