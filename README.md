@@ -1,4 +1,4 @@
 GvS
 ===
 
-Github eVent Syncronize
+Github eVent Synchronize
