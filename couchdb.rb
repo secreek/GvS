@@ -23,7 +23,7 @@ class CouchDB
   end
 
   def put_document db_name, doc_name, doc
-    PUT compose_path([db_name, doc_name]), doc
+    PUT compose_path([db_name, doc_name]), doc.to_json
   end
 
   def delete_document db_name, doc_name
@@ -33,7 +33,7 @@ class CouchDB
   private
   def compose_path segments
     path = segments.join '/'
-    "#{@endpoint}/#{path}"
+    "#{@db_endpoint}/#{path}"
   end
 
 end

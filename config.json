@@ -2,5 +2,5 @@
   "org-name" : "secreek",
   "couchdb-endpoint" : "http://127.0.0.1:5984",
   "db-name" : "secreek-event-dump",
-  "sync-period" : 5
+  "sync-period" : 1
 }

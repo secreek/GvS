@@ -45,18 +45,19 @@ class GvS
     @couch.create_db db_name
   end
 
-  def insert data
+  def insert combined_data
+    data, etag = combined_data
     # make sure the data exists
-    return unless data.length > 0
+    return unless data && data.length > 0
 
     # insert data into CouchDB
     db_name = @config["db-name"]
     data.each do |event|
-      # TODO check the event structure
-      doc_name = event["date"] # use date as doc name
+      date_time = event["created_at"] # use date as doc name
+      doc_name = date_time[0, date_time.index("T")] # strips the time part
       doc = @couch.get_document db_name, doc_name
       if doc
-        doc["data"] << event unless doc["data"].include? event
+        (doc["data"].include? event) ? break : doc["data"] << event
       else # if doc does not exists, create the doc
         doc = { "data"  => [event] }
       end
@@ -65,25 +66,26 @@ class GvS
     end
 
     # update last event for next grab
-    update_last_event data[0]
+    update_last_event etag
   end
 
   def last_event
     # grab last event's hash code
-    doc = @couch.grab_document_from_db "last", @config["db-name"]
-    doc["hash"]
+    doc = @couch.get_document @config["db-name"], "last"
+    doc["etag"] if doc
   end
 
-  def update_last_event event
+  def update_last_event etag
     db_name = @config["db-name"]
     doc = @couch.get_document db_name, "last"
-    doc["hash"] = event["hash"] # TODO change this
+    doc ||= {}
+    doc["etag"] = etag
     @couch.put_document db_name, "last", doc
   end
 
   def new_event_since last_hash = nil
     # grab new event from github api
-    Github.activities_for @config["org-name"], last_hash
+    Github.activities_for_org @config["org-name"], last_hash
   end
 
 end
