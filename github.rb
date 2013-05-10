@@ -6,8 +6,8 @@ class Github
 
   def self.prepare_gh_key_pair
     params = {
-      "client_id" => "2cb0510c962f13396347", #ENV["GH_KEY_PAIR_SECRET"],
-      "client_secret" => "4c8866fb3a2504a1ba190ff99ce45fdf972ff27a" #ENV["GH_KEY_PAIR_SECRET"]
+      "client_id" => ENV["GH_KEY_PAIR_SECRET"],
+      "client_secret" => ENV["GH_KEY_PAIR_SECRET"]
     }
 
     params
