@@ -89,3 +89,6 @@ class GvS
   end
 
 end
+
+app = GvS.new
+app.serve
