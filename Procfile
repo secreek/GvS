@@ -1,1 +1,1 @@
-web: bundle exec ruby sync.rb
+web: bundle exec rackup config.ru
