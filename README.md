@@ -3,6 +3,10 @@ GvS
 
 Github eVent Synchronize
 
+### Current Status
+#### Working version
+- [Can be found here.](http://61.167.60.58:5984/secreek-event-dump/_design/secreek-event-dump/_view/status)
+
 ### API for user contribution to our organization
 
 #### INPUT
