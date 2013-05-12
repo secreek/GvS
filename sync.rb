@@ -10,7 +10,9 @@ class GvS
 
   def initialize
     @config = JSON.load(open('config.json').read)
-    @couch = CouchDB.new @config["couchdb-endpoint"]
+    admin_name = ENV["COUCHDB_ADMIN_NAME"]
+    admin_pwd = ENV["COUCHDB_ADMIN_PASSWORD"]
+    @couch = CouchDB.new(@config["couchdb-endpoint"] % [admin_name, admin_pwd])
   end
 
   def serve
