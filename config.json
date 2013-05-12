@@ -1,6 +1,6 @@
 {
   "org-name" : "secreek",
-  "couchdb-endpoint" : "http://%s:%s@61.167.60.58:5984",
+  "couchdb-endpoint" : "http://61.167.60.58:5984",
   "db-name" : "secreek-event-dump",
   "sync-period" : 1
 }

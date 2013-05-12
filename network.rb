@@ -22,11 +22,16 @@ module NetworkUtils
   end
 
   def PUT url, data = "", params = {}, headers = {}
+    admin_name = ENV["COUCHDB_ADMIN_NAME"]
+    admin_pwd = ENV["COUCHDB_ADMIN_PASSWORD"]
+
+
     uri = URI(url)
     uri.query = URI.encode_www_form(params)
 
     Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
       request = Net::HTTP::Put.new uri.request_uri
+      request.basic_auth admin_name, admin_pwd
       headers.each_pair do |k, v|
         request[k] = v
       end
